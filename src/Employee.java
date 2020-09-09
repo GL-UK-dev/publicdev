@@ -12,4 +12,11 @@ public class Employee {
         this.height = height;
         this.pay = pay;
     }
+    public void printEmployee(){
+        System.out.println(name);
+        System.out.println(position);
+        System.out.println(age);
+        System.out.println(height);
+        System.out.println(pay);
+    }
 }

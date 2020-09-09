@@ -92,7 +92,10 @@ public class Task {
             Employee employee = new Employee(name,position,age,height,pay);
             employeeList[i] = employee;
         }
-        System.out.println(Arrays.toString(employeeList));
+        for (int x =0 ; x < noOfPeople ; x++){
+            employeeList[x].printEmployee();
+        }
+
 
 
 
@@ -104,7 +107,7 @@ public class Task {
         int[][] Cinima = new int[5][5];
         for (int x = 0 ; x < 5 ; x++){
             for (int y = 0 ; y <5 ; y++){
-                Cinima[x][y] =  ran.nextInt(1) + 3;
+                Cinima[x][y] =  ran.nextInt(1) + 4;
             }
         }
 
@@ -122,8 +125,8 @@ public class Task {
         //isntance.task1();
         //isntance.task2();
         //isntance.task3();
-       //isntance.task4();
-        isntance.task5();
+       isntance.task4();
+        //isntance.task5();
 
     }
 

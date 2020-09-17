@@ -29,6 +29,7 @@ public class BankAccount {
     public String GetPassword(){
         return password;
     }
+    public void SetBanence0() { balence =0;}
     public int GetBalence(){
         return balence;
     }

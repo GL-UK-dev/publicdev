@@ -1,13 +1,15 @@
 package mobileBanking;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainMenu {
-    BankAccount[] bankList = new BankAccount[10];
-    Transaction[] transactionsList = new Transaction[10];
+    List<BankAccount> bankList = new ArrayList<BankAccount>();
+    List<Transaction> transactionsList = new ArrayList<Transaction>();
     boolean haslogin = false;
-    int currentLocation;
+    int currentLocation =0;
 
     public static void sout(String inp) {
         System.out.println(inp);
@@ -17,38 +19,50 @@ public class MainMenu {
         Scanner myScanner = new Scanner(System.in);
         MainMenu instance = new MainMenu();
         instance.DefaultFill();
-        sout("would you like to login or create a account ? ");
-        String ans = myScanner.nextLine();
-        if()
 
 
+        while (true) {
+            sout("would you like to login or create a account ?  or exit ");
+            String ans = myScanner.nextLine();
+            if (ans.equalsIgnoreCase("create")) {
+                instance.Createacount();
+            } else if (ans.equalsIgnoreCase("login"))
+            {
+                instance.Login();
+            } else if ( ans.equalsIgnoreCase("exit"))
+            {
+                System.exit(0);
+            }
+        }
     }
+
 
     public void Login() {
         //MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
-        sout("enter the username and passcode of the account you would like to transfer from");
+        sout("enter the username and passcode of the account you would like to login to");
         String username = myScanner.nextLine();
         String password = myScanner.nextLine();
-        int counter =0;
-        if(counter < 3){
-            for (int i = 0;  0<bankList.length ; i++) {
-                if (bankList[i].GetUsername().equals(username)){
-                    for (int q = 0;  0<bankList.length ; q++) {
-                        if(bankList[q].GetPassword().equals(password)){
-                            currentLocation = q;
+        int counter = 0;
+        while (counter < 3) {
+            for (BankAccount a : bankList) {
+                if (a.GetUsername().equals(username)) {
+                    for (BankAccount b : bankList) {
+                        if (b.GetPassword().equals(password)) {
                             haslogin = true;
+                            currentLocation++;
                             menu();
+                        } else {
+                            sout("not many tries left");
+                            counter++;
                         }
                     }
                 }
             }
         }
-        else{ System.exit(0);};
-
-
     }
-    public  void menu() {
+
+    public void menu() {
 
         MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
@@ -99,14 +113,14 @@ public class MainMenu {
 
     public void ViewAccount() {
         Scanner myScanner = new Scanner(System.in);
-        bankList[currentLocation].ViewAccount();
+        bankList.get(currentLocation).ViewAccount();
     }
 
     public void ViewTransations() {
         Scanner myScanner = new Scanner(System.in);
         sout("enter the username and passcode of the account you would like to view");
-       transactionsList[currentLocation].GetTransations();
-        }
+        transactionsList.get(currentLocation).GetTransations();
+    }
 
 
     public void TransferCash() {
@@ -114,28 +128,80 @@ public class MainMenu {
         sout("enter the username and passcode of the account you would like to transfer to");
         String username = myScanner.nextLine();
         String password = myScanner.nextLine();
+        try {
+            for (BankAccount a : bankList) {
+                if (a.GetUsername().equals(username)) {
+                    for (BankAccount b : bankList) {
+                        if (b.GetPassword().equals(password)) {
+                            sout("how much you wanna give");
+                            int Additor = Integer.parseInt(myScanner.nextLine());
+                            b.SetBalence(Additor);
 
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println("!!!!");
+        }
     }
 
     public void Createacount() {
+        String password = "";
         sout("welcome to the account creation tool");
         Scanner myScanner = new Scanner(System.in);
+        sout("enter the name, balence, sortcode , acount number");
+        String username = myScanner.nextLine();
+        int balence = Integer.parseInt(myScanner.nextLine());
+        int sortcode = Integer.parseInt(myScanner.nextLine());
+        int acountnumber = Integer.parseInt(myScanner.nextLine());
+        while (true) {
+            sout("enter password");
+            String p1 = myScanner.nextLine();
+            sout("re enter password");
+            String p2 = myScanner.nextLine();
+            if (p1.equals(p2)) {
+                password = p1;
+                break;
+            }
+        }
+        bankList.add(new BankAccount(username, password, balence, sortcode, acountnumber));
     }
 
     public void DefaultFill() {
-        bankList[0] = new BankAccount("Harry ", "Accenture123", 10, 231233, 3232323);
-        bankList[1] = new BankAccount("Dan", "12345", 10, 231233, 3232323);
-        bankList[2] = new BankAccount("Imran", "Karim4Ever", 1120, 231235, 4555445);
+        bankList.add ( new BankAccount("Harry", "Accenture123", 10, 231233, 3232323));
+        bankList.add ( new BankAccount("Dan", "12345", 10, 231233, 3232323));
+        bankList.add ( new BankAccount("Imran", "Karim4Ever", 1120, 231235, 4555445));
     }
 
     public void RemoveAccount() {
 
+        sout(bankList.get(0).GetUsername());
         Scanner myScanner = new Scanner(System.in);
         sout("would you like to remove you acount ? ");
         String responce = myScanner.nextLine();
-
+        if (responce.equalsIgnoreCase("yes")){
+            if((bankList.get(currentLocation).GetBalence()) > 0){
+                System.out.println("Enter the acount number then the sort code you wanna transfer to ");
+                int acountno = Integer.parseInt(myScanner.nextLine());
+                int srtcode = Integer.parseInt(myScanner.nextLine());
+                for (BankAccount a : bankList) {
+                    if (a.balence == acountno){
+                        for (BankAccount b : bankList) {
+                            if(b.GetSortcode() == srtcode){
+                                b.SetBalence(bankList.get(currentLocation).GetBalence());
+                                bankList.get(currentLocation).SetBanence0();
+                                bankList.remove(currentLocation);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }
+
+}
 
 

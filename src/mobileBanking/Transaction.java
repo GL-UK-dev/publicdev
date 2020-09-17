@@ -22,11 +22,4 @@ public class Transaction {
         System.out.println(recipientAccountnubmer);
         System.out.println(recipientSortcode);
     }
-
-    public boolean Ifblank(){
-        if (sendeName == null){
-            return false;
-        }
-        else return true;
-    }
 }

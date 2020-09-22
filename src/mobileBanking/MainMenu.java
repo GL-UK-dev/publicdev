@@ -1,6 +1,5 @@
 package mobileBanking;
-
-
+//broke
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,19 +15,25 @@ public class MainMenu {
     }
 
     public static void main(String[] args) {
-        Scanner myScanner = new Scanner(System.in);
+
         MainMenu instance = new MainMenu();
         instance.DefaultFill();
+        instance.initMenu();
 
 
+
+    }
+
+    public void initMenu(){
+        Scanner myScanner = new Scanner(System.in);
         while (true) {
             sout("would you like to login or create a account ?  or exit ");
             String ans = myScanner.nextLine();
             if (ans.equalsIgnoreCase("create")) {
-                instance.Createacount();
+                Createacount();
             } else if (ans.equalsIgnoreCase("login"))
             {
-                instance.Login();
+                Login();
             } else if ( ans.equalsIgnoreCase("exit"))
             {
                 System.exit(0);
@@ -40,20 +45,21 @@ public class MainMenu {
     public void Login() {
         //MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
-        sout("enter the username and passcode of the account you would like to login to");
-        String username = myScanner.nextLine();
-        String password = myScanner.nextLine();
+        currentLocation = 0;
+
         int counter = 0;
         while (counter < 3) {
+            sout("enter the username and passcode of the account you would like to login to");
+            String username = myScanner.nextLine();
+            String password = myScanner.nextLine();
             for (BankAccount a : bankList) {
                 if (a.GetUsername().equals(username)) {
                     for (BankAccount b : bankList) {
                         if (b.GetPassword().equals(password)) {
                             haslogin = true;
-                            currentLocation++;
+                            currentLocation = bankList.indexOf(b);
                             menu();
                         } else {
-                            sout("not many tries left");
                             counter++;
                         }
                     }
@@ -64,7 +70,7 @@ public class MainMenu {
 
     public void menu() {
 
-        MainMenu instance = new MainMenu();
+        //MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
         boolean breaker = false;
         while (!breaker) {
@@ -74,45 +80,38 @@ public class MainMenu {
             sout("3  || view transation  ||");
             sout("4  || transfer cash    ||");
             sout("5  || logout           ||");
-            sout("6  || ceate account    ||");
-            sout("7  || remove acount    ||");
-            sout("8  || default fill     ||");
+            sout("6  || remove acount    ||");
             int choice = Integer.parseInt(myScanner.nextLine());
-            //try {
+
             switch (choice) {
                 case 1:
-                    instance.Createacount();
+                    Createacount();
                     break;
                 case 2:
-                    instance.ViewAccount();
+                    ViewAccount();
                     break;
                 case 3:
-                    instance.ViewTransations();
+                    ViewTransations();
                     break;
                 case 4:
-                    instance.TransferCash();
+                    TransferCash();
                     break;
                 case 5:
                     haslogin = false;
-                    breaker = !breaker;
+                    breaker = true;
+                    initMenu();
+                    break;
 
+                case 6:
+                    RemoveAccount();
                     break;
-                //case 6:
-                //   instance.Createacount();
-                //     break;
-                case 7:
-                    instance.RemoveAccount();
-                    break;
-                case 8:
+
             }
-            // } catch (Exception e) {
-            //     sout("dont be silly enter an number ");
-            // }
+
         }
     }
 
     public void ViewAccount() {
-        Scanner myScanner = new Scanner(System.in);
         bankList.get(currentLocation).ViewAccount();
     }
 
@@ -129,13 +128,13 @@ public class MainMenu {
         String username = myScanner.nextLine();
         String password = myScanner.nextLine();
         try {
-            for (BankAccount a : bankList) {
-                if (a.GetUsername().equals(username)) {
-                    for (BankAccount b : bankList) {
-                        if (b.GetPassword().equals(password)) {
+            for (BankAccount p : bankList) {
+                if (p.GetUsername().equals(username)) {
+                    for (BankAccount q : bankList) {
+                        if (q.GetPassword().equals(password)) {
                             sout("how much you wanna give");
                             int Additor = Integer.parseInt(myScanner.nextLine());
-                            b.SetBalence(Additor);
+                            q.SetBalence(Additor);
 
                         }
                     }
@@ -170,27 +169,45 @@ public class MainMenu {
     }
 
     public void DefaultFill() {
-        bankList.add ( new BankAccount("Harry", "Accenture123", 10, 231233, 3232323));
-        bankList.add ( new BankAccount("Dan", "12345", 10, 231233, 3232323));
+        bankList.add ( new BankAccount("Harry", "123", 10, 231233, 3232323));
+        bankList.add ( new BankAccount("Dan", "Accenture12345", 10, 23, 32));
         bankList.add ( new BankAccount("Imran", "Karim4Ever", 1120, 231235, 4555445));
+
+        transactionsList.add ( new Transaction("Harry",23,33,"Dan",23,32));
+        transactionsList.add ( new Transaction("Dan",112,33,"Dan",23,32));
+        transactionsList.add ( new Transaction("Imran", 12,3,"Harry",231233,3232323));
+        transactionsList.add ( new Transaction("Imran", 3,0,"Harry",231233,3232323));
+        transactionsList.add ( new Transaction("Harry", 33,300,"Dam",23,32));
+        transactionsList.add ( new Transaction("Imran", 12,3,"Harry",231233,3232323));
+        transactionsList.add (new Transaction("dan",2,233,"Imarn",231235,4555445));
+
+
+
+
     }
 
     public void RemoveAccount() {
+        System.out.println("working");
 
         sout(bankList.get(0).GetUsername());
         Scanner myScanner = new Scanner(System.in);
         sout("would you like to remove you acount ? ");
         String responce = myScanner.nextLine();
         if (responce.equalsIgnoreCase("yes")){
+            //System.out.println(bankList.get(currentLocation).GetBalence());
             if((bankList.get(currentLocation).GetBalence()) > 0){
-                System.out.println("Enter the acount number then the sort code you wanna transfer to ");
+                System.out.println("Enter the account number then the sort code you wanna transfer to ");
                 int acountno = Integer.parseInt(myScanner.nextLine());
                 int srtcode = Integer.parseInt(myScanner.nextLine());
-                for (BankAccount a : bankList) {
-                    if (a.balence == acountno){
-                        for (BankAccount b : bankList) {
-                            if(b.GetSortcode() == srtcode){
-                                b.SetBalence(bankList.get(currentLocation).GetBalence());
+                for (BankAccount e : bankList) {
+                    System.out.println(e.GetAccountnumber());
+                    if ((e.GetAccountnumber())== acountno){
+
+                        for (BankAccount y : bankList) {
+                            if(y.GetSortcode() == srtcode){
+                                sout("poof ...gone");
+
+                                y.SetBalence(bankList.get(currentLocation).GetBalence());
                                 bankList.get(currentLocation).SetBanence0();
                                 bankList.remove(currentLocation);
                             }
@@ -199,9 +216,7 @@ public class MainMenu {
                 }
             }
         }
-
     }
-
 }
 
 

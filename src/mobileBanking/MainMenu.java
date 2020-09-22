@@ -1,5 +1,4 @@
 package mobileBanking;
-//broke
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,9 +18,6 @@ public class MainMenu {
         MainMenu instance = new MainMenu();
         instance.DefaultFill();
         instance.initMenu();
-
-
-
     }
 
     public void initMenu(){
@@ -40,7 +36,6 @@ public class MainMenu {
             }
         }
     }
-
 
     public void Login() {
         //MainMenu instance = new MainMenu();
@@ -101,13 +96,10 @@ public class MainMenu {
                     breaker = true;
                     initMenu();
                     break;
-
                 case 6:
                     RemoveAccount();
                     break;
-
             }
-
         }
     }
 
@@ -121,21 +113,24 @@ public class MainMenu {
         transactionsList.get(currentLocation).GetTransations();
     }
 
-
     public void TransferCash() {
         Scanner myScanner = new Scanner(System.in);
-        sout("enter the username and passcode of the account you would like to transfer to");
-        String username = myScanner.nextLine();
-        String password = myScanner.nextLine();
+        sout("enter the sortnumber and accountnumber of the account you would like to transfer to");
+        int sort = Integer.parseInt(myScanner.nextLine());
+        int account1 = Integer.parseInt(myScanner.nextLine());
         try {
             for (BankAccount p : bankList) {
-                if (p.GetUsername().equals(username)) {
+                if (p.GetSortcode() == sort) {
                     for (BankAccount q : bankList) {
-                        if (q.GetPassword().equals(password)) {
+                        if (q.GetAccountnumber() == account1) {
                             sout("how much you wanna give");
                             int Additor = Integer.parseInt(myScanner.nextLine());
-                            q.SetBalence(Additor);
-
+                            if (Additor < bankList.get(currentLocation).GetBalence()){
+                                q.SetBalence(Additor);
+                                bankList.get(currentLocation).SetBalence(-Additor);
+                                sout("it is done");
+                            }
+                            else {sout("not enough to transfer");}
                         }
                     }
                 }
@@ -180,21 +175,15 @@ public class MainMenu {
         transactionsList.add ( new Transaction("Harry", 33,300,"Dam",23,32));
         transactionsList.add ( new Transaction("Imran", 12,3,"Harry",231233,3232323));
         transactionsList.add (new Transaction("dan",2,233,"Imarn",231235,4555445));
-
-
-
-
     }
 
     public void RemoveAccount() {
         System.out.println("working");
-
         sout(bankList.get(0).GetUsername());
         Scanner myScanner = new Scanner(System.in);
         sout("would you like to remove you acount ? ");
         String responce = myScanner.nextLine();
         if (responce.equalsIgnoreCase("yes")){
-            //System.out.println(bankList.get(currentLocation).GetBalence());
             if((bankList.get(currentLocation).GetBalence()) > 0){
                 System.out.println("Enter the account number then the sort code you wanna transfer to ");
                 int acountno = Integer.parseInt(myScanner.nextLine());
@@ -202,11 +191,9 @@ public class MainMenu {
                 for (BankAccount e : bankList) {
                     System.out.println(e.GetAccountnumber());
                     if ((e.GetAccountnumber())== acountno){
-
                         for (BankAccount y : bankList) {
                             if(y.GetSortcode() == srtcode){
                                 sout("poof ...gone");
-
                                 y.SetBalence(bankList.get(currentLocation).GetBalence());
                                 bankList.get(currentLocation).SetBanence0();
                                 bankList.remove(currentLocation);

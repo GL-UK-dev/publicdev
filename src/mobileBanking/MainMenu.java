@@ -38,10 +38,8 @@ public class MainMenu {
     }
 
     public void Login() {
-        //MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
         currentLocation = 0;
-
         int counter = 0;
         while (counter < 3) {
             sout("enter the username and passcode of the account you would like to login to");
@@ -64,8 +62,6 @@ public class MainMenu {
     }
 
     public void menu() {
-
-        //MainMenu instance = new MainMenu();
         Scanner myScanner = new Scanner(System.in);
         boolean breaker = false;
         while (!breaker) {

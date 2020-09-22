@@ -172,28 +172,34 @@ public class MainMenu {
     }
 
     public void RemoveAccount() {
-        System.out.println("working");
-        sout(bankList.get(0).GetUsername());
         Scanner myScanner = new Scanner(System.in);
-        sout("would you like to remove you acount ? ");
+        sout("would you like to remove you acount ? yes or no");
         String responce = myScanner.nextLine();
         if (responce.equalsIgnoreCase("yes")){
             if((bankList.get(currentLocation).GetBalence()) > 0){
-                System.out.println("Enter the account number then the sort code you wanna transfer to ");
-                int acountno = Integer.parseInt(myScanner.nextLine());
-                int srtcode = Integer.parseInt(myScanner.nextLine());
-                for (BankAccount e : bankList) {
-                    System.out.println(e.GetAccountnumber());
-                    if ((e.GetAccountnumber())== acountno){
-                        for (BankAccount y : bankList) {
-                            if(y.GetSortcode() == srtcode){
-                                sout("poof ...gone");
-                                y.SetBalence(bankList.get(currentLocation).GetBalence());
-                                bankList.get(currentLocation).SetBanence0();
-                                bankList.remove(currentLocation);
+                System.out.println("Enter  1 to transfer to an different account of 2 to create a new account to move to ");
+                String responce2 = myScanner.nextLine();
+                if (responce2.equalsIgnoreCase("1")){
+                    sout("enter the account number and sortcode");
+                    int acountno = Integer.parseInt(myScanner.nextLine());
+                    int srtcode = Integer.parseInt(myScanner.nextLine());
+                    for (BankAccount e : bankList) {
+                        if ((e.GetAccountnumber())== acountno){
+                            for (BankAccount y : bankList) {
+                                if(y.GetSortcode() == srtcode){
+                                    sout("poof ...gone");
+                                    y.SetBalence(bankList.get(currentLocation).GetBalence());
+                                    bankList.get(currentLocation).SetBanence0();
+                                    bankList.remove(currentLocation);
+                                    haslogin = false;
+                                    initMenu();menu();
+                                }
                             }
                         }
                     }
+                }else if (responce2.equalsIgnoreCase("2")) {
+                    Createacount();
+                    RemoveAccount();
                 }
             }
         }

@@ -104,8 +104,6 @@ public class MainMenu {
     }
 
     public void ViewTransations() {
-        Scanner myScanner = new Scanner(System.in);
-        sout("enter the username and passcode of the account you would like to view");
         transactionsList.get(currentLocation).GetTransations();
     }
 
